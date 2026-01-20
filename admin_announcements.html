@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin — Manage Announcements</title>
+
+    <style>
+        body {
+            background: #f3f6ff;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-box {
+            width: 80%;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 180px;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #4a6cff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 17px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3b57cc;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-box">
+    <h2>📢 Admin — Manage Announcements</h2>
+
+    <form action="{{ url_for('add_announcement') }}" method="POST" enctype="multipart/form-data">
+
+        <!-- Message Field ONLY -->
+        <label>Message</label>
+        <textarea name="message" placeholder="Write your announcement..." required></textarea>
+
+        <!-- Poster Upload -->
+        <label>Upload Poster (optional)</label>
+        <input type="file" name="poster" accept="image/*">
+
+        <button type="submit">Add Announcement</button>
+    </form>
+</div>
+
+</body>
+</html>
