@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Year & Semester - Campus Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #e1f5fe);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #004d40;
+    }
+    select, button {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="dept-title">Select Year & Semester</h2>
+
+   <form action="{{ url_for('subjects') }}" method="GET">
+
+      <input type="hidden" name="department" id="department">
+      <input type="hidden" name="type" id="type">
+
+      <!-- Year (Hidden for 11th & 12th) -->
+      <div id="year-box">
+        <label for="year">Year</label>
+        <select name="year" id="year" class="form-control">
+          <option value="">Select Year</option>
+          <option value="1st">1st Year</option>
+          <option value="2nd">2nd Year</option>
+          <option value="3rd">3rd Year</option>
+        </select>
+      </div>
+
+      <!-- Semester -->
+      <label for="semester">Semester</label>
+      <select name="semester" id="semester" class="form-control" required>
+        <option value="">Select Semester</option>
+        <option value="sem1">Semester 1</option>
+        <option value="sem2">Semester 2</option>
+        <option value="sem3">Semester 3</option>
+        <option value="sem4">Semester 4</option>
+      </select>
+
+      <!-- ⭐ Stream Section (Appears only for 11th & 12th) -->
+      <div id="stream-box" style="display: none;">
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" class="form-control">
+          <option value="">Select Stream</option>
+          <option value="Science">Science</option>
+          <option value="Commerce">Commerce</option>
+          <option value="Arts">Arts</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 mt-4">Continue</button>
+    </form>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const dept = params.get("dept");
+    const type = params.get("type");
+
+    document.getElementById("department").value = dept;
+    document.getElementById("type").value = type;
+
+    const semesterSelect = document.getElementById("semester");
+
+    // Function to load semester options
+    function loadSemesters(options) {
+        semesterSelect.innerHTML = ""; 
+        semesterSelect.innerHTML = `<option value="">Select Semester</option>`;
+        options.forEach(sem => {
+            semesterSelect.innerHTML += `<option value="${sem.value}">${sem.text}</option>`;
+        });
+    }
+
+    if (type === "school") {
+        // Hide year / show stream
+        document.getElementById("year-box").style.display = "none";
+        document.getElementById("stream-box").style.display = "block";
+
+        // ⭐ Only 2 semesters for 11th & 12th
+        loadSemesters([
+            {value: "sem1", text: "Semester 1"},
+            {value: "sem2", text: "Semester 2"}
+        ]);
+
+    } else {
+        // College normal
+        document.getElementById("year-box").style.display = "block";
+        document.getElementById("stream-box").style.display = "none";
+
+        // ⭐ 4 semesters for college
+        loadSemesters([
+            {value: "sem1", text: "Semester 1"},
+            {value: "sem2", text: "Semester 2"},
+            {value: "sem3", text: "Semester 3"},
+            {value: "sem4", text: "Semester 4"}
+        ]);
+    }
+</script>
+
+</body>
+</html>

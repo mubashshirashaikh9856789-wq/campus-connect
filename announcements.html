@@ -1,0 +1,105 @@
+<div class="table-container">
+    <h2 class="text-center mb-4">Announcements</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Notice</th>
+                <th>Published Date</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% if announcements %}
+            {% for ann in announcements %}
+            <tr>
+                <td>{{ loop.index }}</td>
+
+                <!-- NOTICE + NEW BADGE -->
+                <td>
+                    {{ ann.message }}
+
+                    {% set today = current_time.date() %}
+                    {% set created = ann.created_at.date() %}
+
+                    {% if (today - created).days <= 2 %}
+                        <span class="new-badge">NEW</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ ann.created_at.strftime('%d-%m-%Y %I:%M %p') 
+                       if ann.created_at else '—' }}
+                </td>
+
+                <td>
+                    {% if ann.file_path %}
+                    <a href="{{ url_for('static', filename='uploads/' + ann.file_path) }}" 
+                       download 
+                       class="btn btn-sm btn-primary">
+                        Download
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No announcements available</td>
+            </tr>
+        {% endif %}
+        </tbody>
+
+    </table>
+</div>
+
+<!-- STYLES -->
+<style>
+    .table-container {
+        width: 70%;
+        margin: auto;
+        padding-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 16px;
+    }
+
+    thead tr {
+        background-color: #d4ad36;
+        color: black;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    th, td {
+        padding: 14px;
+        border: 1px solid #ddd;
+    }
+
+    .new-badge {
+        background: red;
+        color: white;
+        font-size: 12px;
+        padding: 3px 6px;
+        margin-left: 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    tr:hover {
+        background: #faf7e8;
+    }
+</style>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">

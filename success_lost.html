@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Lost Item</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card-container {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px 35px;
+            width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: white;
+        }
+
+        label {
+            font-weight: 600;
+            color: #003b6f;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .upload-area {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .custom-btn {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .custom-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0, 140, 255, 0.5);
+        }
+
+        #preview {
+            width: 160px;
+            margin-top: 15px;
+            display: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .submit-btn {
+            background: #006eff;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #004bcc;
+        }
+
+        .success-msg {
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+            background: #28a745;
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="card-container">
+
+    <h2>Report Lost Item</h2>
+
+    <!-- Success message -->
+    <div class="success-msg" id="successMsg">Lost Item Report Submitted Successfully!</div>
+
+    <form id="lostForm" action="{{ url_for('submit_lost') }}" method="POST" enctype="multipart/form-data">
+
+        <label>Item Name *</label>
+        <input type="text" class="form-control mb-3" name="item_name" required>
+
+        <label>Phone Number *</label>
+        <input type="tel" class="form-control mb-3" name="phone_number" required>
+
+        <label>Where You Lost It *</label>
+        <input type="text" class="form-control mb-3" name="location" required>
+
+        <label>Date Lost *</label>
+        <input type="date" class="form-control mb-3" name="date_lost" required>
+
+        <label>Upload / Take Photo</label>
+        <div class="upload-area">
+
+            <input type="file" id="cameraInput" name="image" accept="image/*" capture="environment" style="display:none">
+            <input type="file" id="fileInput" name="image" accept="image/*" style="display:none">
+
+            <button type="button" class="custom-btn" onclick="openCamera()">
+                <i class="fas fa-camera"></i> Open Camera
+            </button>
+
+            <button type="button" class="custom-btn" onclick="openFilePicker()">
+                <i class="fas fa-folder-open"></i> Choose File
+            </button>
+
+            <img id="preview">
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Report</button>
+
+    </form>
+</div>
+
+<script>
+    function openCamera() {
+        document.getElementById("cameraInput").click();
+    }
+
+    function openFilePicker() {
+        document.getElementById("fileInput").click();
+    }
+
+    document.getElementById("cameraInput").addEventListener("change", showPreview);
+    document.getElementById("fileInput").addEventListener("change", showPreview);
+
+    function showPreview(event) {
+        const file = event.target.files[0];
+        if (file) {
+            let imgURL = URL.createObjectURL(file);
+            document.getElementById("preview").src = imgURL;
+            document.getElementById("preview").style.display = "block";
+        }
+    }
+
+    // Optional: display success message after submit without redirect
+    document.getElementById('lostForm').addEventListener('submit', function(e){
+        // You can use AJAX to submit without reload if needed
+        // For now, just show success message (optional)
+        // document.getElementById('successMsg').style.display = 'block';
+    });
+</script>
+
+</body>
+</html>

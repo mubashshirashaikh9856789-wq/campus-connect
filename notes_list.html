@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes List</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Uploaded Notes</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Filename</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Semester</th>
+                <th>Stream</th>
+                <th>Subject</th>
+                <th>Uploaded Date & Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in notes %}
+            <tr>
+                <td>{{ note.title }}</td>
+                <td>{{ note.filename }}</td>
+                <td>{{ note.department }}</td>
+                <td>{{ note.year }}</td>
+                <td>{{ note.semester }}</td>
+                <td>{{ note.stream }}</td>
+                <td>{{ note.subject }}</td>
+                <td>{{ note.uploaded_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

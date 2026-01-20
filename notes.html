@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Campus Connect - Notes</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+    body {
+        background: #f7f7f7;
+    }
+    .container {
+        margin-top: 100px; /* Add space so header overlap nahi kare */
+    }
+    .heading {
+        font-size: 26px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* ⭐ Make Search Bar Always Visible */
+    .search-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        position: relative;
+        z-index: 10;            /* BRING TO FRONT */
+        background: #fff;       /* WHITE background so visible */
+        padding: 10px;          /* space */
+        border-radius: 10px;    
+        margin-top: 20px;
+    }
+
+    .search-input {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px;
+        border-radius: 30px;
+        border: 1px solid #bbb;
+    }
+    .note-card {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .note-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .note-info {
+        font-size: 14px;
+        color: gray;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Heading -->
+    <div class="heading">📚 Notes</div>
+
+    <!-- Search Bar -->
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search notes..." onkeyup="searchNotes()">
+    </div>
+
+    <!-- Notes List -->
+    <!-- Notes List -->
+<div id="notesList">
+
+    {% for note in notes %}
+    <div class="note-card">
+        <div class="note-title">{{ note.title }}</div>
+
+        <div class="note-info">
+         Subject: {{ note.subject }} <br>
+         Uploaded by: {{ note.uploader_type }} 
+        {% if note.roll_no %}
+             (Roll No: {{ note.roll_no }})
+        {% endif %}
+
+    <!-- ⭐ FIXED DATE & TIME -->
+        <br> Uploaded at: {{ note.uploaded_at }}
+
+</div>
+
+
+        <a href="/download/{{ note.filename }}" class="btn btn-success btn-sm mt-2">Download</a>
+        <a href="/delete_note/{{ note.id }}" class="btn btn-danger btn-sm mt-2">Delete</a>
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+function searchNotes() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.getElementsByClassName("note-card");
+
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getElementsByClassName("note-title")[0].innerText.toLowerCase();
+
+        if (title.includes(input)) {
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>

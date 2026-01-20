@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta-name viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes List</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            font-family: 'Poppins', sans-serif;
+            padding: 40px;
+            color: #fff;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 900px;
+            margin: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        }
+
+        .note-card {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .note-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .icon-box {
+            font-size: 45px;
+            margin-right: 18px;
+            color: #ffeb3b;
+        }
+
+        .note-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .btn-row {
+            margin-top: 12px;
+        }
+
+        .download-btn {
+            background: #00e676;
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #00c853;
+        }
+
+        /* ⭐ Stylish Delete Button */
+        .delete-btn {
+            background: #ff5252;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background: #ff1744;
+            transform: scale(1.05);
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="page-title">
+        📚 Notes for {{ department }} | {{ year }} | {{ semester }}
+    </h2>
+
+<div style="
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search for a subject..."
+        onkeyup="searchNotes()"
+        style="
+            width: 60%;
+            max-width: 450px;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+        "
+    >
+</div>
+
+
+    <div class="glass-box">
+
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note-card">
+
+                <div class="icon-box">
+
+    {% set ext = note.filename.split('.')[-1].lower() %}
+
+    {% if ext == 'pdf' %}
+        <i class="fa-solid fa-file-pdf"></i>
+
+    {% elif ext in ['png', 'jpg', 'jpeg'] %}
+        <i class="fa-solid fa-file-image"></i>
+
+    {% elif ext in ['ppt', 'pptx'] %}
+        <i class="fa-solid fa-file-powerpoint"></i>
+
+    {% elif ext in ['doc', 'docx'] %}
+        <i class="fa-solid fa-file-word"></i>
+
+    {% else %}
+        <i class="fa-solid fa-file"></i>
+    {% endif %}
+
+</div>
+
+                <div style="flex: 1;">
+
+                    <a href="/view_note/{{ note.filename }}" target="_blank" class="note-title">
+                        {{ note.title }}
+                    </a>
+
+                    <div class="note-details">
+                        Subject: <strong>{{ note.subject }}</strong>
+                    </div>
+                    <div class="note-details">
+                    Uploaded on: {{ note.uploaded_at.strftime("%d-%m-%Y %I:%M %p") }}
+                    </div>
+
+                    <div class="btn-row">
+
+                        <!-- DOWNLOAD -->
+                        <a href="/uploads/{{ note.filename }}" download class="btn download-btn">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+
+                        <!-- DELETE -->
+                        <a href="/delete_note/{{ note.id }}" 
+                           class="delete-btn"
+                           onclick="return confirm('Delete this note?');">
+                           <i class="fa-solid fa-trash"></i> Delete
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center fs-5 mt-2">❌ No notes uploaded for this category.</p>
+        {% endif %}
+
+        <div class="text-center">
+            <a href="/departments" class="btn btn-light back-btn px-4">
+                ⬅ Back
+            </a>
+        </div>
+    </div>
+
+<script>
+function searchNotes() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.getElementsByClassName("note-card");
+
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getElementsByClassName("note-title")[0].innerText.toLowerCase();
+        
+        if (title.includes(input)) {
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>

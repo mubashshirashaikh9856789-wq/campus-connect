@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Departments - Campus Connect</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+
+  background-image: url("{{ url_for('static', filename='images/study_bg.png') }}");
+  background-repeat: repeat;
+  background-size: 400px 400px;   /* 🔥 YAHI LINE */
+  background-position: center;
+}
+
+    /* White overlay */
+    .overlay {
+     background: rgba(255, 255, 255, 0.65);  
+  
+    position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.75);
+      z-index: 0;
+    }
+
+    .department-section {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .department-section h2 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 40px;
+      color: #004d40;
+    }
+
+    .departments {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .dept-card {
+      background-color: #ffffff;
+      border-radius: 20px;
+      width: 180px;
+      padding: 25px 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .dept-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .dept-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+    }
+
+    .dept-card p {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="overlay"></div>
+
+  <section class="department-section">
+    <h2>Select Your Department</h2>
+
+    <div class="departments">
+
+      <a href="{{ url_for('year_sem') }}?dept=IT" class="dept-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/906/906175.png">
+        <p>Information Technology</p>
+      </a>
+
+      <a href="{{ url_for('year_sem') }}?dept=CS" class="dept-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/2721/2721279.png">
+        <p>Computer Science</p>
+      </a>
+
+      <a href="{{ url_for('year_sem') }}?dept=DS" class="dept-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1087/1087815.png">
+        <p>Data Science</p>
+      </a>
+
+      <a href="{{ url_for('year_sem') }}?dept=11&type=school" class="dept-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/2949/2949877.png">
+        <p>11th Standard</p>
+      </a>
+
+      <a href="{{ url_for('year_sem') }}?dept=12&type=school" class="dept-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png">
+        <p>12th Standard</p>
+      </a>
+
+    </div>
+  </section>
+
+</body>
+</html>

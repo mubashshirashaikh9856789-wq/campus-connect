@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Success</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            padding: 40px;
+        }
+        .box {
+            background: white;
+            padding: 25px;
+            width: 450px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        a {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>✅ Note Uploaded Successfully!</h2>
+        <p><b>Title:</b> {{ title }}</p>
+        <p><b>Subject:</b> {{ subject }}</p>
+        <p><b>Department:</b> {{ department }}</p>
+        <p><b>File:</b> {{ filename }}</p>
+        <br>
+        <a href="/welcome">Back to Home</a>
+    </div>
+</body>
+</html>

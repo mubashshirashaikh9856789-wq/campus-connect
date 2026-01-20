@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Notes - Campus Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            background-color: #fff;
+            width: 500px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        function toggleFields() {
+            let dept = document.getElementById("department").value;
+
+            let yearField = document.getElementById("yearField");
+            let semField = document.getElementById("semField");
+            let streamField = document.getElementById("streamField");
+            let semester = document.getElementById("semester");
+
+            semester.innerHTML = `<option value="">Select Semester</option>`;
+
+            if (dept === "11" || dept === "12") {
+                yearField.style.display = "none";
+                streamField.style.display = "block";
+                semField.style.display = "block";
+
+                semester.innerHTML += `<option value="sem1">Semester 1</option>`;
+                semester.innerHTML += `<option value="sem2">Semester 2</option>`;
+            } else {
+                yearField.style.display = "block";
+                streamField.style.display = "none";
+                semField.style.display = "block";
+
+                semester.innerHTML += `<option value="sem1">Semester 1</option>`;
+                semester.innerHTML += `<option value="sem2">Semester 2</option>`;
+                semester.innerHTML += `<option value="sem3">Semester 3</option>`;
+                semester.innerHTML += `<option value="sem4">Semester 4</option>`;
+                semester.innerHTML += `<option value="sem5">Semester 5</option>`;
+                semester.innerHTML += `<option value="sem6">Semester 6</option>`;
+            }
+        }
+
+        // Show roll number only for students
+        function toggleUploader() {
+            let type = document.getElementById("uploader_type").value;
+            let roll = document.getElementById("rollField");
+
+            roll.style.display = (type === "student") ? "block" : "none";
+        }
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Notes</h2>
+        <form action="/upload_notes" method="POST" enctype="multipart/form-data">
+
+            <!-- Uploader Type -->
+            <label>Uploader Type</label>
+            <select name="uploader_type" id="uploader_type" onchange="toggleUploader()" required>
+                <option value="">Select Type</option>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
+
+            <!-- Roll Number -->
+            <div id="rollField" style="display:none;">
+                <label>Roll Number</label>
+                <input type="text" name="roll_no">
+            </div>
+
+            <label>Note Title</label>
+            <input type="text" name="title" required>
+
+            <label>Subject</label>
+            <input type="text" name="subject" required>
+
+            <label>Department</label>
+            <select name="department" id="department" onchange="toggleFields()" required>
+                <option value="">Select Department</option>
+                <option value="11">11th Standard</option>
+                <option value="12">12th Standard</option>
+                <option value="IT">Information Technology</option>
+                <option value="CS">Computer Science</option>
+                <option value="DS">Data Science</option>
+            </select>
+
+            <div id="yearField">
+                <label>Year</label>
+                <select name="year">
+                    <option value="">Select Year</option>
+                    <option value="1st">1st Year</option>
+                    <option value="2nd">2nd Year</option>
+                    <option value="3rd">3rd Year</option>
+                </select>
+            </div>
+
+            <div id="semField">
+                <label>Semester</label>
+                <select name="semester" id="semester">
+                    <option value="">Select Semester</option>
+                </select>
+            </div>
+
+            <div id="streamField" style="display:none;">
+                <label>Stream</label>
+                <select name="stream">
+                    <option value="">Select Stream</option>
+                    <option value="Science">Science</option>
+                    <option value="Commerce">Commerce</option>
+                    <option value="Arts">Arts</option>
+                </select>
+            </div>
+
+            <label>Upload File</label>
+            <input type="file" name="notes_file" accept=".pdf,.doc,.docx,.ppt,.pptx" required>
+
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html>
